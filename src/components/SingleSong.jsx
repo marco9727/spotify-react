@@ -2,7 +2,7 @@ const SingleSong = ({ songInfo }) => {
   return (
     <div className="col text-center" id={songInfo.id}>
       <img
-        className="img-fluid"
+        className="img-fluid custom-img"
         src={songInfo.album.cover_medium}
         alt="track"
       />

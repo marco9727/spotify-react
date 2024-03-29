@@ -1,9 +1,21 @@
 import logo from "../assets/logo/logo.png";
 import Button from "react-bootstrap/Button";
 import { BsHouseDoorFill, BsBookFill } from "react-icons/bs";
-import React from "react";
+import React, { useState } from "react";
 
-const Sidebar = () => {
+const Sidebar = ({ onSearch }) => {
+  const [query, setQuery] = useState("");
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setQuery(value);
+  };
+
+  const handleSidebarSearch = (event) => {
+    event.preventDefault();
+    onSearch(query); // Effettua la ricerca solo all'invio
+  };
+
   return (
     <div className="col col-2">
       <nav
@@ -11,7 +23,7 @@ const Sidebar = () => {
         id="sidebar"
       >
         <div className="container flex-column align-items-start">
-          <a className="navbra-brand">
+          <a href="home" className="navbra-brand">
             <img src={logo} alt="Spotify logo" width="131" height="40" />
           </a>
           <Button
@@ -31,7 +43,7 @@ const Sidebar = () => {
                 <li>
                   <a
                     className="nav-item nav-link d-flex align-items-center"
-                    href="#"
+                    href="home"
                   >
                     <BsHouseDoorFill />
                     &nbsp; Home
@@ -41,14 +53,17 @@ const Sidebar = () => {
                   {" "}
                   <a
                     className="nav-item nav-link d-flex align-items-center"
-                    href="#"
+                    href="your library"
                   >
                     <BsBookFill />
                     &nbsp; Your Library
                   </a>
                 </li>
                 <li>
-                  <form className="input-group mt-3">
+                  <form
+                    className="input-group mt-3"
+                    onSubmit={handleSidebarSearch}
+                  >
                     <input
                       type="text"
                       className="form-control"
@@ -56,14 +71,16 @@ const Sidebar = () => {
                       placeholder="Search"
                       aria-label="Search"
                       aria-describedby="basic-addon2"
+                      value={query}
+                      onChange={handleChange}
                     />
                     <div className="input-group-append">
-                      <button
+                      <Button
                         className="btn btn-outline-secondary btn-sm h-100"
                         type="submit"
                       >
                         GO
-                      </button>
+                      </Button>
                     </div>
                   </form>
                 </li>
@@ -71,13 +88,15 @@ const Sidebar = () => {
             </div>
           </div>
         </div>
-        <div className="nav-btn">
-          <button className="btn signup-btn" type="button">
-            Sign Up
-          </button>
-          <button className="btn login-btn" type="button">
-            Login
-          </button>
+        <div id="nav-btn">
+          <div id="button">
+            <Button className="btn" id="signup-btn" type="button">
+              Sign Up
+            </Button>
+            <Button className="btn" id="login-btn" type="button">
+              Login
+            </Button>
+          </div>
           <a href="#">Cookie Policy</a> |<a href="#">Privacy</a>
         </div>
       </nav>

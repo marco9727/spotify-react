@@ -1,13 +1,14 @@
-import SingleSong from "./SingleSong";
 import { useEffect, useState } from "react";
+import SingleSong from "./SingleSong";
 
-const SongSection = ({ artistName, sectionTitle }) => {
-  const [musicData, setMusicData] = useState([]);
+const SearchSong = ({ searchQuery }) => {
+  //   const [searchQuery, setSearchQuery] = useState("");
+  const [musicResults, setMusicResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
 
-  const fetchSongs = () => {
+  const fetchSearchSong = () => {
     fetch(
-      "https://striveschool-api.herokuapp.com/api/deezer/search?q=" +
-        artistName,
+      `https://striveschool-api.herokuapp.com/api/deezer/search?q=${searchQuery}`,
       {
         method: "GET",
         headers: {
@@ -26,10 +27,8 @@ const SongSection = ({ artistName, sectionTitle }) => {
       .then((data) => {
         console.log(data);
         if (Array.isArray(data.data)) {
-          const initialData = data.data
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 6);
-          setMusicData(initialData);
+          const initialData = data.data.slice(0, 10);
+          setMusicResults(initialData);
         } else {
           throw new Error("Array 'songs' not found in data");
         }
@@ -40,21 +39,26 @@ const SongSection = ({ artistName, sectionTitle }) => {
   };
 
   useEffect(() => {
-    fetchSongs();
+    if (searchQuery) {
+      fetchSearchSong();
+      setShowResults(true);
+    } else {
+      setShowResults(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div className="row">
       <div className="col-10">
-        <div id="rock">
-          <h2>{sectionTitle}</h2>
-          <div
-            className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3"
-            id="rockSection"
-          >
-            {musicData && musicData.length > 0 ? (
-              musicData.map((song, index) => (
+        <div
+          id="searchResults"
+          style={{ display: showResults ? "block" : "none" }}
+        >
+          <h2>Search Results</h2>
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 imgLinks py-3">
+            {musicResults && musicResults.length > 0 ? (
+              musicResults.map((song, index) => (
                 <SingleSong key={index} songInfo={song} />
               ))
             ) : (
@@ -67,4 +71,4 @@ const SongSection = ({ artistName, sectionTitle }) => {
   );
 };
 
-export default SongSection;
+export default SearchSong;
