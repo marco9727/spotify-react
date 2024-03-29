@@ -1,3 +1,4 @@
+import Loading from "./Loading";
 import SingleSong from "./SingleSong";
 import { useEffect, useState } from "react";
 
@@ -58,7 +59,7 @@ const SongSection = ({ artistName, sectionTitle }) => {
                 <SingleSong key={index} songInfo={song} />
               ))
             ) : (
-              <p>Loading...</p>
+              <Loading />
             )}
           </div>
         </div>

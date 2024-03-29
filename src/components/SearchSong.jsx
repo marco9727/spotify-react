@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import SingleSong from "./SingleSong";
+import Loading from "./Loading";
 
 const SearchSong = ({ searchQuery }) => {
   //   const [searchQuery, setSearchQuery] = useState("");
@@ -62,7 +63,7 @@ const SearchSong = ({ searchQuery }) => {
                 <SingleSong key={index} songInfo={song} />
               ))
             ) : (
-              <p>Loading...</p>
+              <Loading />
             )}
           </div>
         </div>
